@@ -2,5 +2,7 @@
 
 ## Welcome
 OP made bad code
+
 it really corrupts files by appending .png
-it does not recover anything
+
+it does not recover anything like you think it would have
