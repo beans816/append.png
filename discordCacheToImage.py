@@ -1,21 +1,21 @@
-import getpass
-import os
+import os.path
 from shutil import copyfile
-import sys
+
+#You should know that this corrupts images in the cache and doesnt recover anything like you advertised >:( bad !
+#also fixed your code for use in linux
+
 
 def main():
     global discordDir
-    stringpiece1 = (r"C:\Users")
-    stringpiece2 = (r"AppData\Roaming\Discord")
-    value=f"{stringpiece1}\{getpass.getuser()}\{stringpiece2}"
+    value=f"/home/usr/.config/discord/Cache/" #to your cache
     if os.path.isdir(value):
-        print("Automatically found Discord directory.")
+        print("Discord directory valid.")
         discordDir = value
     else:
-        print("Discord directory could not be located. Please specify the location")
+        print("Discord directory could not be located.")
         
         def getDir():
-            discordDir = input(r"Discord directory: ")
+            discordDir = input(r"Re-enter directory: ")
             if os.path.isdir(discordDir):
                 print("Discord directory found!")
                 return discordDir
@@ -26,10 +26,9 @@ def main():
                 return discordDir
         discordDir = getDir()
     
-    print("Now that the directory has been found. I'll do some quick checks to ensure everything is where it's supposed to be.")
     input("Press any key to continue or ctrl+c to quit.")
     
-    newdir = f"{discordDir}\Cache"
+    newdir = f"{discordDir}"
     if os.path.isdir(newdir):
         num=0
         for i in os.listdir(newdir):
@@ -39,7 +38,7 @@ def main():
                 pass
             else:
                 num+=1
-                print(f"Found {i}")
+                #print(f"Found {i}")
         print(f"Found a total of {num} images!")
         input("Enter to continue")
         print(f"\n\n\n\n\n\n")
@@ -72,9 +71,12 @@ def main():
 
         print(f"\n\n\n\n\n\n\n")
         print("Next, we need to specify a directory to dump all the images into")
+
+        #just look in the os library and you can code one in
+
         print("Please create a folder and specify its location below")
         def getDirSave():
-            SaveDir = input(r"Save-to directory: ")
+            SaveDir = f"/home/usr/Desktop/cacheIMG/"
             if os.path.isdir(SaveDir):
                 print("Directory found!")
                 return SaveDir
@@ -85,10 +87,6 @@ def main():
                 return SaveDir
         SaveDir = getDirSave()
         print(f"\n\n\n\n\n\n\n")
-        print("WARNING!")
-        print("If you have specified the incorrect directory please exit the program now!")
-        print("If you make any mistakes here, it'll be very hard to undo the damages")
-        print("By pressing enter you agree that any damages caused by incorrect directory assignment is completely your own fault.")
         print(f"All {images_count} file(s) will be saved to: {SaveDir}")
         input("Press enter to continue the process at your own discretion or ctrl+c to exit")
         FileListArray=[]
@@ -104,8 +102,8 @@ def main():
                 
         for i in range(int(images_count)):
             fileName = FileListArray[i]
-            fileloc = f"{newdir}\{fileName}"
-            newfile = f"{SaveDir}\{fileName}.png"
+            fileloc = f"{newdir}/{fileName}"
+            newfile = f"{SaveDir}/{fileName}.png"
             print(f"Copied to {newfile}")
             try:
                 copyfile(fileloc, newfile)
